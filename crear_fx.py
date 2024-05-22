@@ -6,16 +6,22 @@ def crear_funcion(punto1, punto2):
 
     if x2 - x1 != 0 :
         m = (y2 - y1) / (x2 - x1)
+        b = y1 - m * x1
     
     else: 
-        m = (y2 - y1) / (x2 + 0.01 - x1)
-        invalida = True
+        m = 0
+        b = x1
+        constante = x1
+
+        #invalida = True
        # raise ValueError("Los puntos tienen el mismo X lo que ocaciona una división por cero")
-    
-    b= y1 - m * x1
+
 
     def fx_recta(x):
-        return m * x + b
+        if x2 - x1 != 0:
+            return m * x + b
+        else:
+            return constante
     
     return fx_recta, m, b, invalida
 

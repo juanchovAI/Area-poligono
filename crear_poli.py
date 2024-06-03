@@ -23,6 +23,7 @@ def crear_poli():
 
     aristas = []
 
+    array_aux = np.zeros(11)
     try:
         hull = ConvexHull(puntos)
         hull_puntos = [puntos[i] for i in hull.vertices]
@@ -30,10 +31,34 @@ def crear_poli():
             punto1 = hull_puntos[i]
             punto2 = hull_puntos[(i + 1) % len(hull_puntos)]
             aristas.append((punto1, punto2))
+        
+        for punto in range(len(hull_puntos)):
+            puntos_str = str(hull_puntos[punto][0]) + str(hull_puntos[punto][1])
+            if puntos_str == '00':
+                array_aux[punto] = -1
+            else:
+                array_aux[punto] = int(puntos_str)
+        array_aux[-1] = 1
+
     except QhullError as e:
         punto1 = (min(p[0] for p in puntos), min(p[1] for p in puntos))
         punto2 = (max(p[0] for p in puntos), max(p[1] for p in puntos))
         aristas.append((punto1, punto2))
+
+    array_support = np.zeros(11)
+
+
+    for punto in range(len(puntos)):
+        puntos_str = str(puntos[punto][0]) + str(puntos[punto][1])
+        if puntos_str == '00':
+            array_support[punto] = -1
+        else:
+            array_support[punto] = int(puntos_str)
+
+    
+
+    if len(puntos) == len(aristas):
+        array_support[-1] = 1
 
 
     funciones = []
@@ -100,7 +125,9 @@ def crear_poli():
     vertices = obtener_vertices(aristas)
 
 
-    area = round(shoelace_area(vertices))
+    area = np.ceil(shoelace_area(vertices))
     
     if fx_invalida == False:
-        plt.savefig(f"./imgs/A_{area}_{random.randint(1,9999999999)}.jpg")
+        plt.savefig(f"./imgs/{int(area)}/A_{area}_{random.randint(1,9999999999)}.jpg")
+
+    return array_support, array_aux

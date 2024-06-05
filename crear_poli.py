@@ -7,23 +7,27 @@ from obtener_vertices import obtener_vertices
 from scipy.spatial import ConvexHull, QhullError
 
 
-def crear_poli():
+def crear_poli_fx(puntos=[],prediccion=False):
 
-    puntos = []
+    if len(puntos) == 0:
+        numero_random_puntos = random.randint(3, 10)
 
-    numero_random_puntos = random.randint(3, 10)
+        def crear_punto():
+            x = random.randint(0, 5)
+            y = random.randint(0, 5)
+            return (x, y)
 
-    def crear_punto():
-        x = random.randint(0, 5)
-        y = random.randint(0, 5)
-        return (x, y)
+        for i in range(numero_random_puntos):
+            puntos.append(crear_punto())
 
-    for i in range(numero_random_puntos):
-        puntos.append(crear_punto())
 
     aristas = []
 
-    array_aux = np.zeros(11)
+    if prediccion == False:
+        array_aux = np.zeros(11)
+    else:
+        array_aux = np.zeros(10)
+
     try:
         hull = ConvexHull(puntos)
         hull_puntos = [puntos[i] for i in hull.vertices]
@@ -38,15 +42,18 @@ def crear_poli():
                 array_aux[punto] = -1
             else:
                 array_aux[punto] = int(puntos_str)
-        array_aux[-1] = 1
+        if prediccion == False:
+            array_aux[-1] = 1            
 
     except QhullError as e:
         punto1 = (min(p[0] for p in puntos), min(p[1] for p in puntos))
         punto2 = (max(p[0] for p in puntos), max(p[1] for p in puntos))
         aristas.append((punto1, punto2))
 
-    array_support = np.zeros(11)
-
+    if prediccion == False:
+        array_support = np.zeros(11)
+    else:
+        array_support = np.zeros(10)
 
     for punto in range(len(puntos)):
         puntos_str = str(puntos[punto][0]) + str(puntos[punto][1])
@@ -56,9 +63,9 @@ def crear_poli():
             array_support[punto] = int(puntos_str)
 
     
-
-    if len(puntos) == len(aristas):
-        array_support[-1] = 1
+    if prediccion == False:
+        if len(puntos) == len(aristas):
+            array_support[-1] = 1
 
 
     funciones = []
@@ -124,10 +131,14 @@ def crear_poli():
 
     vertices = obtener_vertices(aristas)
 
+    if prediccion == True:
+        if fx_invalida == False:
+            plt.savefig(f"./pred/predicción.jpg")
+    else:
+        area = np.ceil(shoelace_area(vertices))
 
-    area = np.ceil(shoelace_area(vertices))
-    
-    if fx_invalida == False:
-        plt.savefig(f"./imgs/{int(area)}/A_{area}_{random.randint(1,9999999999)}.jpg")
+        if fx_invalida == False:
+            plt.savefig(f"./imgs/{int(area)}/A_{area}_{random.randint(1,9999999999)}.jpg")
+
 
     return array_support, array_aux

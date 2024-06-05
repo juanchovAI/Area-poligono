@@ -1,4 +1,4 @@
-from crear_poli import crear_poli
+from crear_poli_copy import crear_poli
 import pandas as pd
 import numpy as np
 

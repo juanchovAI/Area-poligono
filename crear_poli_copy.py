@@ -112,14 +112,14 @@ def crear_poli():
             dominio = np.arange(aristas[i][1][0], aristas[i][0][0] + 0.01)
             rango = [funciones[i](x) for x in dominio]
         
-        plt.plot(dominio, rango, "black", linewidth = 2)
+        plt.plot(dominio, rango, "black", linewidth = 4)
         print(dominio, rango,)
         
 
     plt.xlim(0,5)
     plt.ylim(0,5)
-    plt.xticks([1,2,3,4,5])
-    plt.yticks([1,2,3,4,5])
+    plt.xticks([-1,0,1,2,3,4,5,6])
+    plt.yticks([-1,0,1,2,3,4,5,6])
     plt.grid()
 
 
@@ -127,16 +127,9 @@ def crear_poli():
 
 
     area = np.ceil(shoelace_area(vertices))
-    
+    area = np.ceil(shoelace_area(vertices))
+
+    if fx_invalida == False:
+        plt.savefig(f"./imgs/{int(area)}/A_{area}_{random.randint(1,9999999999)}.jpg")
 
     return array_support, array_aux
-
-array_support_final = np.empty((0,11))
-
-for i in range(0,10000):
-    soporte, auxiliar = crear_poli()
-    array_support_final = np.vstack((array_support_final, soporte))
-    array_support_final = np.vstack((array_support_final, auxiliar))
-
-array_support_df = pd.DataFrame(array_support_final, columns=[1,2,3,4,5,6,7,8,9,10,'convexo'])
-array_support_df.to_csv("array_support_df.csv")

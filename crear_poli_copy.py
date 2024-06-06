@@ -6,21 +6,21 @@ from crear_fx import crear_funcion
 from calcular_area import shoelace_area
 from obtener_vertices import obtener_vertices
 from scipy.spatial import ConvexHull, QhullError
+from pathlib import Path
 
+def crear_poli( puntos = []):
 
-def crear_poli():
+    # puntos = []
 
-    puntos = []
+    # numero_random_puntos = random.randint(3, 10)
 
-    numero_random_puntos = random.randint(3, 10)
+    # def crear_punto():
+    #     x = random.randint(0, 5)
+    #     y = random.randint(0, 5)
+    #     return (x, y)
 
-    def crear_punto():
-        x = random.randint(0, 5)
-        y = random.randint(0, 5)
-        return (x, y)
-
-    for i in range(numero_random_puntos):
-        puntos.append(crear_punto())
+    # for i in range(numero_random_puntos):
+    #     puntos.append(crear_punto())
 
     aristas = []
 
@@ -120,7 +120,7 @@ def crear_poli():
     plt.ylim(0,5)
     plt.xticks([-1,0,1,2,3,4,5,6])
     plt.yticks([-1,0,1,2,3,4,5,6])
-    plt.grid()
+    plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
 
 
     vertices = obtener_vertices(aristas)
@@ -129,7 +129,12 @@ def crear_poli():
     area = np.ceil(shoelace_area(vertices))
     area = np.ceil(shoelace_area(vertices))
 
-    if fx_invalida == False:
-        plt.savefig(f"./imgs/{int(area)}/A_{area}_{random.randint(1,9999999999)}.jpg")
-
+    if fx_invalida == False :
+        # path = Path(f"./imgs/{int(area)}")
+        # if not path.exists():
+        # # Si no existe, crear el directorio
+        #     path.mkdir(parents=True)
+        #     print(f"Directorio '{int(area)}' creado.")
+        # plt.savefig(f"./imgs/{int(area)}/A_{area}_{random.randint(1,9999999999)}.jpg")
+        plt.savefig(f"./pred/prediccion.jpg")
     return array_support, array_aux

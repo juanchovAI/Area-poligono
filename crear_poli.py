@@ -99,7 +99,7 @@ def crear_poli_fx(puntos=[],prediccion=False):
                     print(f"Las aristas {i+1} y {j+1} son paralelas y no se intersectan.")
 
     #verificar_poligono_valido(funciones)
-
+    #fig, ax = plt.subplots(figsize=(3,3.5))
     plt.figure(figsize=(3,3.5))
     for i in range(0, len(funciones) ): 
         dominio = []
@@ -118,27 +118,38 @@ def crear_poli_fx(puntos=[],prediccion=False):
             dominio = np.arange(aristas[i][1][0], aristas[i][0][0] + 0.01)
             rango = [funciones[i](x) for x in dominio]
         
-        plt.plot(dominio, rango, "black", linewidth = 2)
+        plt.plot(dominio, rango, "black", linewidth = 3)
+
         print(dominio, rango,)
         
-
+    # ax.spines['top'].set_visible(False)
+    # ax.spines['right'].set_visible(False)
+    # ax.spines['left'].set_visible(False)
+    # ax.spines['bottom'].set_visible(False)
+    # ax.tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+    # fig.patch.set_visible(False)
+    # ax.axis('off')
     plt.xlim(0,5)
     plt.ylim(0,5)
-    plt.xticks([1,2,3,4,5])
-    plt.yticks([1,2,3,4,5])
-    plt.grid()
+    plt.xticks([-1,0,1,2,3,4,5,6])
+    plt.yticks([-1,0,1,2,3,4,5,6])
+    
 
+    #plt.subplots_adjust(left=0, right=1, top=1, bottom=0)
+   # plt.savefig(f"./pred/predicción.jpg",bbox_inches='tight', pad_inches=0.1,  transparent=True)
+    plt.show()
+    
+    plt.savefig(f"./pred/prediccion.jpg")
+    #vertices = obtener_vertices(aristas)
 
-    vertices = obtener_vertices(aristas)
+    # if prediccion == True:
+    #     if fx_invalida == False:
+    #         plt.savefig(f"./pred/prediccion.jpg")
+    # else:
+    #     area = np.ceil(shoelace_area(vertices))
 
-    if prediccion == True:
-        if fx_invalida == False:
-            plt.savefig(f"./pred/predicción.jpg")
-    else:
-        area = np.ceil(shoelace_area(vertices))
-
-        if fx_invalida == False:
-            plt.savefig(f"./imgs/{int(area)}/A_{area}_{random.randint(1,9999999999)}.jpg")
+    #     if fx_invalida == False and area == 0:
+    #         plt.savefig(f"./imgs/{int(area)}/A_{area}_{random.randint(1,9999999999)}.jpg")
 
 
     return array_support, array_aux

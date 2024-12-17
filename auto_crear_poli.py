@@ -3,12 +3,20 @@ import pandas as pd
 import numpy as np
 
 
-array_support_final = np.empty((0,11))
+array_support_final = np.empty((0, 11))  # 10 longitudes + 1 área
 
-for i in range(0,20000):
-    soporte, auxiliar = crear_poli()
-    array_support_final = np.vstack((array_support_final, soporte))
-    array_support_final = np.vstack((array_support_final, auxiliar))
+for i in range(200000):
+    longitudes, area = crear_poli()
+    fila = np.array(longitudes + [area])  # Combinar longitudes y área en una fila
+    array_support_final = np.vstack((array_support_final, fila))  # Agregar la fila al array final
 
-array_support_df = pd.DataFrame(array_support_final, columns=[1,2,3,4,5,6,7,8,9,10,'convexo'])
+# Crear el DataFrame con los datos
+array_support_df = pd.DataFrame(array_support_final, columns=[f"longitud_{i+1}" for i in range(10)] + ["area"])
+
+# Eliminar duplicados
 array_support_df = array_support_df.drop_duplicates()
+
+# Guardar el DataFrame en un archivo CSV
+array_support_df.to_csv("poligonos_data.csv", index=False)
+
+print("CSV creado exitosamente con las longitudes y el área.")
